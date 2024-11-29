@@ -1,0 +1,16 @@
+
+    app.get('/delet-note', function(req, res){
+         con.connect(function(error){
+             if(error) console.log(error);
+             
+             let id = req.query.sno;
+
+             let sql = "delete from testnode where sno="+id;
+
+             con.query(sql, function(error, result){
+                if(error) throw error;
+
+               res.redirect('/testnode')  
+        })
+    })
+
