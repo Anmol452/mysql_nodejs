@@ -14,3 +14,7 @@
         })
     })
 
+
+
+// btn
+<td><a href="delet-note?sno=<%- testnode[i].sno %>">delete</a></td>
