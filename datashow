@@ -1,0 +1,84 @@
+// npm install ejs
+
+let express = require('express')
+let app = express()
+let con = require('./conn')
+
+let bodyparser = require('body-parser')
+
+app.use(bodyparser.json())
+
+app.use(bodyparser.urlencoded({ extended:true }))
+
+app.get('/', function(req, res){
+    res.sendFile(__dirname+'/singup.html')
+});
+
+
+
+//datashow wabpage  
+app.get('/testnode', function(req, res){
+    con.connect(function(error){
+         if(error) console.log(error);
+         
+         let sql = "SELECT * FROM testnode";
+
+         con.query(sql, function(error, result){
+            if(error) throw error;
+
+            res.render(__dirname+"/datashow",{testnode:result});
+            
+            
+    })
+
+
+})
+
+})
+
+app.listen(7000)
+
+
+
+
+
+//ejs page
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>datashow</h1>
+
+    <table border="1" width="100%">
+
+        <tr>
+            <th>sno</th>
+            <th>name</th>
+            <th>description</th>
+            <th>date</th>
+        </tr>
+
+        <% if(testnode.length > 0){ %>
+          
+            <% for(let i=0; i<testnode.length; i++){ %>
+                <tr>
+                    <td> <%- testnode[i].sno %> </td>
+                    <td> <%- testnode[i].name %> </td>
+                    <td> <%- testnode[i].description %> </td>
+                    <td> <%- testnode[i].date %> </td>
+                </tr>
+                <% } %>
+
+            <% }else{ %>
+              <h1>data note fund!</h1>
+                <% } %>
+
+    </table>
+
+</body>
+</html>
