@@ -1,0 +1,63 @@
+let express = require('express')
+let app = express()
+let con = require('./conn')
+
+let bodyparser = require('body-parser')
+
+app.use(bodyparser.json())
+
+app.use(bodyparser.urlencoded({ extended:true }))
+
+app.get('/', function(req, res){
+    res.sendFile(__dirname+'/singup.html')
+});
+
+app.post('/', function(req, res){
+   
+    let name = req.body.name;
+    let email = req.body.email;
+    let pass = req.body.password;
+
+ 
+    con.connect(function(error){
+        if(error) throw error;
+
+        let sql = "INSERT INTO `login` (`name`, `eamil`, `password`) VALUES ('"+ name +"', '"+ pass +"' ,'"+ pass +"')";
+        con.query(sql, function(error, result){
+            if(error) throw error;
+
+            res.send("data sent sussusfull"+ result.inserId);
+        });
+    })
+    
+})
+
+
+app.listen(7000)
+
+
+
+
+
+// singu.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sinup</title>
+</head>
+<body>
+    
+    <h1>singu</h1>
+    <form action="" method="post"> <br> <br>
+      <input type="email" placeholder="email" name="email"><br><br>
+      <input type="text" placeholder="name" name="name"><br><br>
+      <input type="password" placeholder="password" name="password"><br><br>
+      <input type="submit" placeholder="submit">
+    </form>
+
+
+</body>
+</html>
